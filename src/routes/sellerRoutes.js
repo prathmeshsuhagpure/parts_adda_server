@@ -1,0 +1,11 @@
+const router = require("express").Router();
+const ctrl = require("../controllers/sellerController");
+const { protect, restrictTo } = require("../middlewares/auth");
+router.use(protect);
+router.post("/register", ctrl.register);
+router.get("/dashboard", restrictTo("vendor"), ctrl.getDashboard);
+router.get("/profile", restrictTo("vendor"), ctrl.getProfile);
+router.put("/profile", restrictTo("vendor"), ctrl.updateProfile);
+router.put("/orders/:id/status", restrictTo("vendor"), ctrl.updateOrderStatus);
+router.get("/payouts", restrictTo("vendor"), ctrl.getPayouts);
+module.exports = router;
