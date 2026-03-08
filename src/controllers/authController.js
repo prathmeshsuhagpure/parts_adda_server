@@ -49,7 +49,7 @@ const register = asyncHandler(async (req, res) => {
 
   return created(
     res,
-    { user: user.toSafeObject(), accessToken, refreshToken },
+    { user, accessToken, refreshToken },
     "Registration successful",
   );
 });
@@ -67,11 +67,7 @@ const login = asyncHandler(async (req, res) => {
     throw new AppError("Account deactivated. Contact support.", 403);
 
   const { accessToken, refreshToken } = await generateTokenPair(user);
-  return success(
-    res,
-    { user: user.toSafeObject(), accessToken, refreshToken },
-    "Login successful",
-  );
+  return success(res, { user, accessToken, refreshToken }, "Login successful");
 });
 
 /* // ── POST /auth/otp/send ───────────────────────────────────────
