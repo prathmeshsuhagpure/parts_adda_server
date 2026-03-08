@@ -38,32 +38,6 @@ router.post(
   login,
 );
 
-/* router.post(
-  "/otp/send",
-  authLimiter,
-  [
-    body("phone")
-      .trim()
-      .matches(/^[6-9]\d{9}$/)
-      .withMessage("Valid Indian mobile number required"),
-  ],
-  validate,
-  ctrl.sendOtp,
-);
-
-router.post(
-  "/otp/verify",
-  authLimiter,
-  [
-    body("phone").trim().notEmpty(),
-    body("otp")
-      .isLength({ min: 6, max: 6 })
-      .withMessage("OTP must be 6 digits"),
-  ],
-  validate,
-  ctrl.verifyOtp,
-); */
-
 router.post("/refresh", refreshToken);
 router.post("/logout", protect, logout);
 router.get("/me", protect, getMe);
