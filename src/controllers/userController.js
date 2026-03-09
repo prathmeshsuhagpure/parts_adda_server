@@ -102,35 +102,6 @@ exports.removeVehicle = asyncHandler(async (req, res) => {
   return success(res, {}, "Vehicle removed");
 });
 
-// ── GET /users/wishlist ───────────────────────────────────────
-exports.getWishlist = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id).populate(
-    "wishlist",
-    "name price images sku brand",
-  );
-  return success(res, { wishlist: user.wishlist });
-});
-
-// ── POST /users/wishlist/:partId ──────────────────────────────
-exports.toggleWishlist = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
-  const idx = user.wishlist.indexOf(req.params.partId);
-  let action;
-  if (idx === -1) {
-    user.wishlist.push(req.params.partId);
-    action = "added";
-  } else {
-    user.wishlist.splice(idx, 1);
-    action = "removed";
-  }
-  await user.save();
-  return success(
-    res,
-    { action },
-    `Part ${action} ${action === "added" ? "to" : "from"} wishlist`,
-  );
-});
-
 // ── POST /users/b2b/apply ─────────────────────────────────────
 exports.applyB2b = asyncHandler(async (req, res) => {
   const { businessName, gstNumber, contactName } = req.body;

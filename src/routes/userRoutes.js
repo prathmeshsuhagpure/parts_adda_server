@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const ctrl = require("../controllers/userController");
+const controller = require("../controllers/wishlistController");
 const { protect } = require("../middlewares/auth");
 
 router.use(protect);
@@ -13,7 +14,7 @@ router.post("/addresses/:id/default", ctrl.setDefaultAddress);
 router.get("/vehicles", ctrl.getVehicles);
 router.post("/vehicles", ctrl.addVehicle);
 router.delete("/vehicles/:id", ctrl.removeVehicle);
-router.get("/wishlist", ctrl.getWishlist);
-router.post("/wishlist/:partId", ctrl.toggleWishlist);
+router.get("/wishlist", controller.getWishlist);
+router.post("/wishlist/:partId", controller.toggleWishlist);
 router.post("/b2b/apply", ctrl.applyB2b);
 module.exports = router;
