@@ -1,5 +1,6 @@
 const Wishlist = require("../models/wishlist");
 const asyncHandler = require("../utils/asyncHandler");
+const { success, created } = require("../utils/response");
 
 const toggleWishlist = asyncHandler(async (req, res) => {
   const userId = req.user.id;
