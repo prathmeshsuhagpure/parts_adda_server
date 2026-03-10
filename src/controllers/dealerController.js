@@ -60,7 +60,7 @@ const applyDealer = asyncHandler(async (req, res) => {
 });
 
 const getDealerStatus = asyncHandler(async (req, res) => {
-  const dealer = await Dealer.findOne({ user: req.user.id });
+  const dealer = await Dealer.findOne({ userId: req.user.id });
 
   if (!dealer) {
     return error(res, "Dealer application not found", 404);
