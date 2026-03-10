@@ -1,4 +1,4 @@
-const Dealer = require("../models/Dealer");
+const Dealer = require("../models/dealer");
 const User = require("../models/User");
 const asyncHandler = require("../utils/asyncHandler");
 const { success, created, error } = require("../utils/response");
