@@ -65,4 +65,5 @@ const dealerSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Dealer", dealerSchema);
+const Dealer = mongoose.model("Dealer", dealerSchema);
+module.exports = Dealer;
