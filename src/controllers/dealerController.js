@@ -14,12 +14,17 @@ const applyDealer = asyncHandler(async (req, res) => {
     city,
     state,
     pincode,
-    verificationStatus,
   } = req.body;
 
-  const existing = await Dealer.findOne({ phone });
-  if (existing) {
-    return error(res, "Dealer with this phone number already exists.", 409);
+  const userId = req.user?.id || req.body.userId;
+
+  if (!userId) {
+    return error(res, "User ID is required", 400);
+  }
+
+  const existingDealer = await Dealer.findOne({ userId });
+  if (existingDealer) {
+    return error(res, "Dealer with this user ID already exists.", 409);
   }
 
   const dealer = new Dealer({
@@ -33,7 +38,7 @@ const applyDealer = asyncHandler(async (req, res) => {
     city,
     state,
     pincode,
-    verificationStatus: verificationStatus || "pending",
+    verificationStatus: "pending",
   });
 
   await dealer.save();
