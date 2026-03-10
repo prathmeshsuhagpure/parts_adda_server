@@ -28,6 +28,7 @@ const applyDealer = asyncHandler(async (req, res) => {
   }
 
   const dealer = new Dealer({
+    userId,
     shopName,
     ownerName,
     gstNumber,
