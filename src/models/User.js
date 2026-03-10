@@ -16,19 +16,6 @@ const addressSchema = new mongoose.Schema(
   { _id: true },
 );
 
-const b2bProfileSchema = new mongoose.Schema({
-  businessName: String,
-  gstNumber: String,
-  contactName: String,
-  status: {
-    type: String,
-    enum: ["pending", "approved", "rejected"],
-    default: "pending",
-  },
-  creditLimit: { type: Number, default: 0 },
-  creditUsed: { type: Number, default: 0 },
-});
-
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
@@ -45,7 +32,6 @@ const userSchema = new mongoose.Schema(
     isActive: { type: Boolean, default: true },
     fcmToken: String,
     addresses: [addressSchema],
-    b2bProfile: b2bProfileSchema,
     refreshToken: { type: String, select: false },
   },
   { timestamps: true },

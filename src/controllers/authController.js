@@ -11,12 +11,12 @@ const signAccess = (user) =>
   jwt.sign(
     { id: user._id, role: user.role, email: user.email, phone: user.phone },
     process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN || "15m" },
+    { expiresIn: process.env.JWT_EXPIRES_IN },
   );
 
 const signRefresh = (userId) =>
   jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "30d",
+    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
   });
 
 const generateTokenPair = async (user) => {

@@ -12,6 +12,7 @@ const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const sellerRoutes = require("./routes/sellerRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const dealerRoutes = require("./routes/dealerRoures");
 
 // Middleware
 app.use(cors());
@@ -28,6 +29,7 @@ app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
 app.use("/seller", sellerRoutes);
 app.use("/notifications", notificationRoutes);
+app.use("/dealer", dealerRoutes);
 
 const PORT = process.env.PORT;
 
