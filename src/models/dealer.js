@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 
 const dealerSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     shopName: {
       type: String,
       required: true,
