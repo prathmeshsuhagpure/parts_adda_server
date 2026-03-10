@@ -12,7 +12,7 @@ const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const sellerRoutes = require("./routes/sellerRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
-const dealerRoutes = require("./routes/dealerRoures");
+const dealerRoutes = require("./routes/dealerRoutes");
 
 // Middleware
 app.use(cors());
