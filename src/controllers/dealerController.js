@@ -72,7 +72,25 @@ const getDealerStatus = asyncHandler(async (req, res) => {
   });
 });
 
+const updateDealerStatus = asyncHandler(async (req, res) => {
+  const { dealerId } = req.params;
+  const { status } = req.body;
+
+  const dealer = await Dealer.findByIdAndUpdate(
+    dealerId,
+    { verificationStatus: status },
+    { new: true },
+  );
+
+  if (!dealer) {
+    return error(res, "Dealer not found", 404);
+  }
+
+  return success(res, { dealer }, "Dealer status updated successfully");
+});
+
 module.exports = {
   applyDealer,
   getDealerStatus,
+  updateDealerStatus,
 };

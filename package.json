@@ -12,6 +12,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@elastic/elasticsearch": "^9.3.4",
     "@sendgrid/mail": "^8.1.6",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
@@ -22,6 +23,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.2.4",
     "razorpay": "^2.9.6",
+    "redis": "^5.11.0",
     "slugify": "^1.6.6"
   },
   "devDependencies": {

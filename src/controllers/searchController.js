@@ -1,7 +1,7 @@
 const { Client } = require("@elastic/elasticsearch");
-const { getRedis } = require("../../../../shared/config/redis");
-const asyncHandler = require("../../../../shared/utils/asyncHandler");
-const { success, paginated } = require("../../../../shared/utils/response");
+const { getRedis } = require("../config/redis");
+const asyncHandler = require("../utils/asyncHandler");
+const { success, paginated } = require("../utils/response");
 
 const es = new Client({ node: process.env.ES_URL || "http://localhost:9200" });
 const INDEX = "parts";

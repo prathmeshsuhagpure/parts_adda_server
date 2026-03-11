@@ -5,7 +5,7 @@ const asyncHandler = require("..//utils/asyncHandler");
 const { success, created, paginated } = require("../utils/response");
 
 // ── GET /parts ────────────────────────────────────────────────
-exports.listParts = asyncHandler(async (req, res) => {
+const listParts = asyncHandler(async (req, res) => {
   const {
     page = 1,
     limit = 20,
@@ -59,7 +59,7 @@ exports.listParts = asyncHandler(async (req, res) => {
 });
 
 // ── GET /parts/:id ────────────────────────────────────────────
-exports.getPartById = asyncHandler(async (req, res) => {
+const getPartById = asyncHandler(async (req, res) => {
   const part = await Part.findOne({ _id: req.params.id, isActive: true })
     .populate("brandId", "name logo country isOEM")
     .populate("categoryId", "name slug parentId");
@@ -74,7 +74,7 @@ exports.getPartById = asyncHandler(async (req, res) => {
 });
 
 // ── POST /parts (vendor) ──────────────────────────────────────
-exports.createPart = asyncHandler(async (req, res) => {
+const createPart = asyncHandler(async (req, res) => {
   const {
     name,
     sku,
@@ -116,7 +116,7 @@ exports.createPart = asyncHandler(async (req, res) => {
 });
 
 // ── PUT /parts/:id (vendor) ───────────────────────────────────
-exports.updatePart = asyncHandler(async (req, res) => {
+const updatePart = asyncHandler(async (req, res) => {
   const part = await Part.findById(req.params.id);
   if (!part) throw new AppError("Part not found.", 404);
 
@@ -158,7 +158,7 @@ exports.updatePart = asyncHandler(async (req, res) => {
 });
 
 // ── GET /parts/oem/:oemNumber ─────────────────────────────────
-exports.getByOem = asyncHandler(async (req, res) => {
+const getByOem = asyncHandler(async (req, res) => {
   const part = await Part.findOne({
     oemNumber: req.params.oemNumber,
     isActive: true,
@@ -170,7 +170,7 @@ exports.getByOem = asyncHandler(async (req, res) => {
 });
 
 // ── POST /parts/:id/reviews ───────────────────────────────────
-exports.addReview = asyncHandler(async (req, res) => {
+const addReview = asyncHandler(async (req, res) => {
   const { rating, title, comment, orderId } = req.body;
   const existing = await Review.findOne({
     partId: req.params.id,
@@ -202,3 +202,12 @@ exports.addReview = asyncHandler(async (req, res) => {
 
   return created(res, { review }, "Review submitted");
 });
+
+module.exports = {
+  listParts,
+  getPartById,
+  createPart,
+  updatePart,
+  getByOem,
+  addReview,
+};

@@ -13,6 +13,8 @@ const orderRoutes = require("./routes/orderRoutes");
 const sellerRoutes = require("./routes/sellerRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const dealerRoutes = require("./routes/dealerRoutes");
+const partRoutes = require("./routes/partRoutes");
+const searchRoutes = require("./routes/searchRoutes");
 
 // Middleware
 app.use(cors());
@@ -30,6 +32,12 @@ app.use("/orders", orderRoutes);
 app.use("/seller", sellerRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/dealer", dealerRoutes);
+app.use("/parts", partRoutes);
+app.use("/search", searchRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Welcome to Parts Adda API");
+});
 
 const PORT = process.env.PORT;
 
