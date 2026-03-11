@@ -1,10 +1,11 @@
 const Category = require("../models/Category");
 const Brand = require("../models/Brand");
 const Vehicle = require("../models/Vehicle");
+const Part = require("../models/Part");
 const asyncHandler = require("../utils/asyncHandler");
 const { success, created } = require("../utils/response");
 
-exports.getCategories = asyncHandler(async (req, res) => {
+const getCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find({ isActive: true }).sort(
     "sortOrder name",
   );
@@ -22,35 +23,51 @@ exports.getCategories = asyncHandler(async (req, res) => {
   return success(res, { categories: roots });
 });
 
-exports.createCategory = asyncHandler(async (req, res) => {
+const createCategory = asyncHandler(async (req, res) => {
   const cat = await Category.create(req.body);
   return created(res, { category: cat });
 });
 
-exports.getBrands = asyncHandler(async (req, res) => {
+const getBrands = asyncHandler(async (req, res) => {
   const brands = await Brand.find({ isActive: true }).sort("name");
   return success(res, { brands });
 });
 
-exports.createBrand = asyncHandler(async (req, res) => {
+const createBrand = asyncHandler(async (req, res) => {
   const brand = await Brand.create(req.body);
   return created(res, { brand });
 });
 
-exports.getVehicleMakes = asyncHandler(async (req, res) => {
+const getVehicleMakes = asyncHandler(async (req, res) => {
   const makes = await Vehicle.distinct("make");
   return success(res, { makes: makes.sort() });
 });
 
-exports.getModelsForMake = asyncHandler(async (req, res) => {
+const getModelsForMake = asyncHandler(async (req, res) => {
   const models = await Vehicle.distinct("model", { make: req.params.make });
   return success(res, { models: models.sort() });
 });
 
-exports.getYearsForModel = asyncHandler(async (req, res) => {
+const getYearsForModel = asyncHandler(async (req, res) => {
   const years = await Vehicle.distinct("year", {
     make: req.params.make,
     model: req.params.model,
   });
   return success(res, { years: years.sort((a, b) => b - a) });
 });
+
+const getPartsByCategory = asyncHandler(async (req, res) => {
+  const parts = await Part.find({ categoryId: req.params.categoryId });
+  return success(res, { parts });
+});
+
+module.exports = {
+  getCategories,
+  createCategory,
+  getBrands,
+  createBrand,
+  getVehicleMakes,
+  getModelsForMake,
+  getYearsForModel,
+  getPartsByCategory,
+};

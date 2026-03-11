@@ -15,4 +15,6 @@ const vehicleSchema = new mongoose.Schema(
   { timestamps: true },
 );
 vehicleSchema.index({ make: 1, model: 1, year: 1 });
-module.exports = mongoose.model("Vehicle", vehicleSchema);
+
+const Vehicle = mongoose.model("Vehicle", vehicleSchema);
+module.exports = Vehicle;

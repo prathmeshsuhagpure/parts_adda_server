@@ -83,4 +83,5 @@ partSchema.methods.syncAggregates = function () {
   }
 };
 
-module.exports = mongoose.model("Part", partSchema);
+const Part = mongoose.model("Part", partSchema);
+module.exports = Part;
