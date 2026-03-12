@@ -20,6 +20,7 @@ router.get("/vehicles/makes", catCtrl.getVehicleMakes);
 router.get("/vehicles/:make/models", catCtrl.getModelsForMake);
 router.get("/vehicles/:make/:model/years", catCtrl.getYearsForModel);
 router.get("/categories/:categoryId/parts", catCtrl.getPartsByCategory);
+router.get("/categories/:categoryId/subcategories", catCtrl.getSubcategories);
 
 // ── Authenticated ─────────────────────────────────────────────
 router.post("/parts/:id/reviews", protect, addReview);

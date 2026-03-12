@@ -61,6 +61,13 @@ const getPartsByCategory = asyncHandler(async (req, res) => {
   return success(res, { parts });
 });
 
+const getSubcategories = asyncHandler(async (req, res) => {
+  const subcategories = await Category.find({
+    parentId: req.params.categoryId,
+  });
+  return success(res, { subcategories });
+});
+
 module.exports = {
   getCategories,
   createCategory,
@@ -70,4 +77,5 @@ module.exports = {
   getModelsForMake,
   getYearsForModel,
   getPartsByCategory,
+  getSubcategories,
 };
