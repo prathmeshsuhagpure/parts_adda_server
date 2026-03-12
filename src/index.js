@@ -15,6 +15,7 @@ const notificationRoutes = require("./routes/notificationRoutes");
 const dealerRoutes = require("./routes/dealerRoutes");
 const partRoutes = require("./routes/partRoutes");
 const searchRoutes = require("./routes/searchRoutes");
+const vehicleRoutes = require("./routes/vehicleRoutes");
 
 // Middleware
 app.use(cors());
@@ -34,6 +35,7 @@ app.use("/notifications", notificationRoutes);
 app.use("/dealer", dealerRoutes);
 app.use("/parts", partRoutes);
 app.use("/search", searchRoutes);
+app.use("/vehicles", vehicleRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to Parts Adda API");
