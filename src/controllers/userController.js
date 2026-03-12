@@ -84,11 +84,8 @@ const getVehicles = asyncHandler(async (req, res) => {
 
 const addVehicle = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
-
-  // create vehicle first
   const vehicle = await Vehicle.create(req.body);
 
-  // push vehicle id to user
   user.vehicles.push(vehicle._id);
 
   await user.save();
@@ -98,10 +95,11 @@ const addVehicle = asyncHandler(async (req, res) => {
 
 const removeVehicle = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
-  const v = user.vehicles.id(req.params.id);
-  if (!v) throw new AppError("Vehicle not found.", 404);
-  v.deleteOne();
+
+  user.vehicles.pull(req.params.vehicleId);
+
   await user.save();
+
   return success(res, {}, "Vehicle removed");
 });
 
