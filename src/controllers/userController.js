@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const AppError = require("../utils/appError");
 const Wishlist = require("../models/wishlist");
+const Vehicle = require("../models/Vehicle");
 const asyncHandler = require("../utils/asyncHandler");
 const { success, created } = require("../utils/response");
 
@@ -83,13 +84,16 @@ const getVehicles = asyncHandler(async (req, res) => {
 
 const addVehicle = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
-  user.vehicles.push(req.body);
+
+  // create vehicle first
+  const vehicle = await Vehicle.create(req.body);
+
+  // push vehicle id to user
+  user.vehicles.push(vehicle._id);
+
   await user.save();
-  return created(
-    res,
-    { vehicle: user.vehicles[user.vehicles.length - 1] },
-    "Vehicle added",
-  );
+
+  return created(res, { vehicle }, "Vehicle added");
 });
 
 const removeVehicle = asyncHandler(async (req, res) => {
