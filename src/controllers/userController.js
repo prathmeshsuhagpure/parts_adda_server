@@ -78,8 +78,8 @@ const setDefaultAddress = asyncHandler(async (req, res) => {
 });
 
 const getVehicles = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id).select("vehicles");
-  return success(res, { vehicles: user.vehicles });
+  const user = await User.findById(req.user.id).populate("vehicles");
+  return success(res, { vehicles: user.vehicles }, "User vehicles retrieved");
 });
 
 const addVehicle = asyncHandler(async (req, res) => {
