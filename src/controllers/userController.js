@@ -26,7 +26,7 @@ const updateProfile = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.user.id,
     { name, email, avatar, fcmToken, gender, dateOfBirth },
-    { new: true, runValidators: true },
+    { returnDocument: "after", runValidators: true },
   );
   return success(res, { user }, "Profile updated");
 });
