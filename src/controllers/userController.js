@@ -1,16 +1,24 @@
 const User = require("../models/User");
 const AppError = require("../utils/appError");
+const Wishlist = require("../models/wishlist");
 const asyncHandler = require("../utils/asyncHandler");
 const { success, created } = require("../utils/response");
 
 // ── GET /users/profile ────────────────────────────────────────
 exports.getProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id).populate(
-    "wishlist",
+  const user = await User.findById(req.user.id);
+
+  if (!user) throw new AppError("User not found.", 404);
+
+  const wishlist = await Wishlist.find({ userId: req.user.id }).populate(
+    "partId",
     "name price images sku",
   );
-  if (!user) throw new AppError("User not found.", 404);
-  return success(res, { user });
+
+  return success(res, {
+    user,
+    wishlist,
+  });
 });
 
 // ── PUT /users/profile ────────────────────────────────────────
