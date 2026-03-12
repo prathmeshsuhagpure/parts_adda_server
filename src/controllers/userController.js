@@ -5,7 +5,7 @@ const asyncHandler = require("../utils/asyncHandler");
 const { success, created } = require("../utils/response");
 
 // ── GET /users/profile ────────────────────────────────────────
-exports.getProfile = asyncHandler(async (req, res) => {
+const getProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
   if (!user) throw new AppError("User not found.", 404);
@@ -21,25 +21,22 @@ exports.getProfile = asyncHandler(async (req, res) => {
   });
 });
 
-// ── PUT /users/profile ────────────────────────────────────────
-exports.updateProfile = asyncHandler(async (req, res) => {
-  const { name, email, avatar, fcmToken } = req.body;
+const updateProfile = asyncHandler(async (req, res) => {
+  const { name, email, avatar, fcmToken, gender, dateOfBirth } = req.body;
   const user = await User.findByIdAndUpdate(
     req.user.id,
-    { name, email, avatar, fcmToken },
+    { name, email, avatar, fcmToken, gender, dateOfBirth },
     { new: true, runValidators: true },
   );
   return success(res, { user }, "Profile updated");
 });
 
-// ── GET /users/addresses ──────────────────────────────────────
-exports.getAddresses = asyncHandler(async (req, res) => {
+const getAddresses = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id).select("addresses");
   return success(res, { addresses: user.addresses });
 });
 
-// ── POST /users/addresses ─────────────────────────────────────
-exports.addAddress = asyncHandler(async (req, res) => {
+const addAddress = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   if (req.body.isDefault) {
     user.addresses.forEach((a) => (a.isDefault = false));
@@ -51,8 +48,7 @@ exports.addAddress = asyncHandler(async (req, res) => {
   return created(res, { address: added }, "Address added");
 });
 
-// ── PUT /users/addresses/:id ──────────────────────────────────
-exports.updateAddress = asyncHandler(async (req, res) => {
+const updateAddress = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   const addr = user.addresses.id(req.params.id);
   if (!addr) throw new AppError("Address not found.", 404);
@@ -62,8 +58,7 @@ exports.updateAddress = asyncHandler(async (req, res) => {
   return success(res, { address: addr }, "Address updated");
 });
 
-// ── DELETE /users/addresses/:id ───────────────────────────────
-exports.deleteAddress = asyncHandler(async (req, res) => {
+const deleteAddress = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   const addr = user.addresses.id(req.params.id);
   if (!addr) throw new AppError("Address not found.", 404);
@@ -72,8 +67,7 @@ exports.deleteAddress = asyncHandler(async (req, res) => {
   return success(res, {}, "Address removed");
 });
 
-// ── POST /users/addresses/:id/default ────────────────────────
-exports.setDefaultAddress = asyncHandler(async (req, res) => {
+const setDefaultAddress = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   user.addresses.forEach(
     (a) => (a.isDefault = a._id.toString() === req.params.id),
@@ -82,14 +76,12 @@ exports.setDefaultAddress = asyncHandler(async (req, res) => {
   return success(res, {}, "Default address updated");
 });
 
-// ── GET /users/vehicles ───────────────────────────────────────
-exports.getVehicles = asyncHandler(async (req, res) => {
+const getVehicles = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id).select("vehicles");
   return success(res, { vehicles: user.vehicles });
 });
 
-// ── POST /users/vehicles ──────────────────────────────────────
-exports.addVehicle = asyncHandler(async (req, res) => {
+const addVehicle = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   user.vehicles.push(req.body);
   await user.save();
@@ -100,8 +92,7 @@ exports.addVehicle = asyncHandler(async (req, res) => {
   );
 });
 
-// ── DELETE /users/vehicles/:id ────────────────────────────────
-exports.removeVehicle = asyncHandler(async (req, res) => {
+const removeVehicle = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   const v = user.vehicles.id(req.params.id);
   if (!v) throw new AppError("Vehicle not found.", 404);
@@ -110,8 +101,7 @@ exports.removeVehicle = asyncHandler(async (req, res) => {
   return success(res, {}, "Vehicle removed");
 });
 
-// ── POST /users/b2b/apply ─────────────────────────────────────
-exports.applyB2b = asyncHandler(async (req, res) => {
+const applyB2b = asyncHandler(async (req, res) => {
   const { businessName, gstNumber, contactName } = req.body;
   const user = await User.findByIdAndUpdate(
     req.user.id,
@@ -129,3 +119,17 @@ exports.applyB2b = asyncHandler(async (req, res) => {
     "B2B application submitted",
   );
 });
+
+module.exports = {
+  getProfile,
+  updateProfile,
+  getAddresses,
+  addAddress,
+  updateAddress,
+  deleteAddress,
+  setDefaultAddress,
+  getVehicles,
+  addVehicle,
+  removeVehicle,
+  applyB2b,
+};

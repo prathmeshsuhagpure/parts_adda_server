@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema(
       default: "customer",
     },
     avatar: String,
+    gender: {
+      type: String,
+      enum: ["male", "female", "other"],
+    },
+
+    dateOfBirth: Date,
     isVerified: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
     fcmToken: String,
