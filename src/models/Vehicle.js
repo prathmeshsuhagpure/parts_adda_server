@@ -6,7 +6,7 @@ const vehicleSchema = new mongoose.Schema(
     year: { type: Number, required: true },
     fuelType: {
       type: String,
-      enum: ["petrol", "diesel", "electric", "hybrid", "cng"],
+      enum: ["Petrol", "Diesel", "Electric", "Hybrid", "CNG"],
     },
     engineCC: Number,
     variant: String,
