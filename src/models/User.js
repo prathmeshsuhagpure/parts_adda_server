@@ -38,6 +38,15 @@ const userSchema = new mongoose.Schema(
     isActive: { type: Boolean, default: true },
     fcmToken: String,
     addresses: [addressSchema],
+    vehicles: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Vehicle",
+        },
+      ],
+      default: [],
+    },
     refreshToken: { type: String, select: false },
   },
   { timestamps: true },
