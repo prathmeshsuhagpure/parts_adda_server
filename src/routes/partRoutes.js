@@ -6,6 +6,7 @@ const {
   createPart,
   updatePart,
   getByOem,
+  getPartsByCategory,
 } = require("../controllers/partController");
 const { protect } = require("../middlewares/auth");
 
@@ -18,4 +19,6 @@ router.post("/", protect, createPart);
 router.put("/:id", protect, updatePart);
 
 router.get("/oem/:oemNumber", getByOem);
+
+router.get("/:categoryId/parts", getPartsByCategory);
 module.exports = router;

@@ -203,6 +203,11 @@ const addReview = asyncHandler(async (req, res) => {
   return created(res, { review }, "Review submitted");
 });
 
+const getPartsByCategory = asyncHandler(async (req, res) => {
+  const parts = await Part.find({ categoryId: req.params.categoryId });
+  return success(res, { parts });
+});
+
 module.exports = {
   listParts,
   getPartById,
@@ -210,4 +215,5 @@ module.exports = {
   updatePart,
   getByOem,
   addReview,
+  getPartsByCategory,
 };
