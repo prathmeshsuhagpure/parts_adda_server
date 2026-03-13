@@ -1,4 +1,4 @@
-const Category = require("../models/Category");
+/* const Category = require("../models/Category");
 const Brand = require("../models/Brand");
 const Vehicle = require("../models/Vehicle");
 const Part = require("../models/Part");
@@ -78,4 +78,96 @@ module.exports = {
   getYearsForModel,
   getPartsByCategory,
   getSubcategories,
+};
+ */
+
+const Category = require("../models/Category");
+
+const getAllCategories = async (req, res) => {
+  try {
+    const categories = await Category.find().sort({ path: 1 });
+
+    res.json({
+      success: true,
+      count: categories.length,
+      data: categories,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getRootCategories = async (req, res) => {
+  try {
+    const categories = await Category.find({ level: 0 });
+
+    res.json({
+      success: true,
+      data: categories,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getSubCategories = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const categories = await Category.find({ parent: id });
+
+    res.json({
+      success: true,
+      data: categories,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getCategoryTree = async (req, res) => {
+  try {
+    const categories = await Category.find().sort({ path: 1 });
+
+    const map = {};
+    const roots = [];
+
+    categories.forEach((cat) => {
+      map[cat._id] = { ...cat._doc, children: [] };
+    });
+
+    categories.forEach((cat) => {
+      if (cat.parent) {
+        map[cat.parent]?.children.push(map[cat._id]);
+      } else {
+        roots.push(map[cat._id]);
+      }
+    });
+
+    res.json({
+      success: true,
+      data: roots,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = {
+  getAllCategories,
+  getRootCategories,
+  getSubCategories,
+  getCategoryTree,
 };

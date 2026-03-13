@@ -3,25 +3,53 @@ const slugify = require("slugify");
 
 const categorySchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, trim: true },
-    slug: { type: String, unique: true },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    slug: {
+      type: String,
+      unique: true,
+      index: true,
+    },
     parentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       default: null,
     },
-    icon: String,
-    image: String,
-    level: { type: Number, default: 0 }, // 0=root, 1=sub, 2=sub-sub
-    isActive: { type: Boolean, default: true },
-    sortOrder: { type: Number, default: 0 },
+    icon: {
+      type: String,
+    },
+    image: {
+      type: String,
+    },
+    level: {
+      type: Number,
+      default: 0,
+    },
+    path: {
+      type: String,
+      index: true,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    sortOrder: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 );
 
 categorySchema.pre("save", function () {
   if (this.isModified("name")) {
-    this.slug = slugify(this.name, { lower: true, strict: true });
+    this.slug = slugify(this.name, {
+      lower: true,
+      strict: true,
+    });
   }
 });
 
