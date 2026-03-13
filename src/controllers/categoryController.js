@@ -120,7 +120,7 @@ const getSubCategories = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const categories = await Category.find({ parent: id });
+    const categories = await Category.find({ parentId: id });
 
     res.json({
       success: true,
@@ -146,8 +146,8 @@ const getCategoryTree = async (req, res) => {
     });
 
     categories.forEach((cat) => {
-      if (cat.parent) {
-        map[cat.parent]?.children.push(map[cat._id]);
+      if (cat.parentId) {
+        map[cat.parentId]?.children.push(map[cat._id]);
       } else {
         roots.push(map[cat._id]);
       }

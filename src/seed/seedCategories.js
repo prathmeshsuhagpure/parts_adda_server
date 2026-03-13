@@ -7,13 +7,13 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const insertCategory = async (
   category,
-  parent = null,
+  parentId = null,
   level = 0,
   path = "",
 ) => {
   const created = await Category.create({
     name: category.name,
-    parent,
+    parentId,
     level,
   });
 
@@ -26,7 +26,7 @@ const insertCategory = async (
       if (typeof child === "string") {
         const childCat = await Category.create({
           name: child,
-          parent: created._id,
+          parentId: created._id,
           level: level + 1,
         });
 
