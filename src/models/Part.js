@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Brand = require("../models/Brand");
 
 const sellerListingSchema = new mongoose.Schema(
   {
