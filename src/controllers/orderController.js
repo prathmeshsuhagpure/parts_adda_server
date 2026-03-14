@@ -12,7 +12,7 @@ const razorpay = new Razorpay({
 });
 
 // ── POST /orders ──────────────────────────────────────────────
-exports.placeOrder = asyncHandler(async (req, res) => {
+const placeOrder = asyncHandler(async (req, res) => {
   const {
     items,
     shippingAddress,
@@ -73,7 +73,7 @@ exports.placeOrder = asyncHandler(async (req, res) => {
 });
 
 // ── POST /orders/verify-payment ───────────────────────────────
-exports.verifyPayment = asyncHandler(async (req, res) => {
+const verifyPayment = asyncHandler(async (req, res) => {
   const { orderId, razorpayOrderId, razorpayPaymentId, razorpaySignature } =
     req.body;
   const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
@@ -105,7 +105,7 @@ exports.verifyPayment = asyncHandler(async (req, res) => {
 });
 
 // ── GET /orders ───────────────────────────────────────────────
-exports.getOrders = asyncHandler(async (req, res) => {
+const getOrders = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10, status } = req.query;
   const filter = { userId: req.user.id };
   if (status) filter.status = status;
@@ -120,7 +120,7 @@ exports.getOrders = asyncHandler(async (req, res) => {
 });
 
 // ── GET /orders/:id ───────────────────────────────────────────
-exports.getOrderById = asyncHandler(async (req, res) => {
+const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findOne({
     _id: req.params.id,
     userId: req.user.id,
@@ -130,7 +130,7 @@ exports.getOrderById = asyncHandler(async (req, res) => {
 });
 
 // ── POST /orders/:id/cancel ───────────────────────────────────
-exports.cancelOrder = asyncHandler(async (req, res) => {
+const cancelOrder = asyncHandler(async (req, res) => {
   const order = await Order.findOne({
     _id: req.params.id,
     userId: req.user.id,
@@ -151,7 +151,7 @@ exports.cancelOrder = asyncHandler(async (req, res) => {
 });
 
 // ── GET /orders/:id/track ─────────────────────────────────────
-exports.trackOrder = asyncHandler(async (req, res) => {
+const trackOrder = asyncHandler(async (req, res) => {
   const order = await Order.findOne({
     _id: req.params.id,
     userId: req.user.id,
@@ -184,7 +184,7 @@ exports.trackOrder = asyncHandler(async (req, res) => {
 });
 
 // ── POST /orders/webhook/razorpay ─────────────────────────────
-exports.razorpayWebhook = asyncHandler(async (req, res) => {
+const razorpayWebhook = asyncHandler(async (req, res) => {
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
   const signature = req.headers["x-razorpay-signature"];
   const body = JSON.stringify(req.body);
@@ -213,3 +213,13 @@ exports.razorpayWebhook = asyncHandler(async (req, res) => {
   }
   res.json({ received: true });
 });
+
+module.exports = {
+  placeOrder,
+  verifyPayment,
+  getOrders,
+  getOrderById,
+  cancelOrder,
+  trackOrder,
+  razorpayWebhook,
+};
