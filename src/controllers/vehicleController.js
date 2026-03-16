@@ -1,4 +1,4 @@
-const Brand = require("../models/Brand");
+const Brand = require("../models/vehicle catalog models/vehicle_brand");
 const VehicleModel = require("../models/vehicle catalog models/vehicle_model");
 const Generation = require("../models/vehicle catalog models/vehicle_generation");
 const Variant = require("../models/vehicle catalog models/vehicle_variant");
@@ -147,6 +147,13 @@ const addUserVehicle = async (req, res) => {
 // GET USER GARAGE VEHICLES
 const getUserVehicles = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized user",
+      });
+    }
+
     const vehicles = await UserVehicle.find({ user: req.user.id }).populate({
       path: "variant",
       populate: {
@@ -160,11 +167,14 @@ const getUserVehicles = async (req, res) => {
       },
     });
 
-    res.json({
+    res.status(200).json({
       success: true,
+      count: vehicles.length,
       data: vehicles,
     });
   } catch (error) {
+    console.error("getUserVehicles error:", error);
+
     res.status(500).json({
       success: false,
       message: error.message,
