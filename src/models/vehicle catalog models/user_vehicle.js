@@ -8,7 +8,7 @@ const userVehicleSchema = new mongoose.Schema({
 
   variant: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Variant",
+    ref: "VehicleVariant",
   },
 
   registrationNumber: String,
