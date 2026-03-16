@@ -119,24 +119,21 @@ const addUserVehicle = async (req, res) => {
   try {
     const { variantId, registrationNumber } = req.body;
 
-    if (!variantId) {
-      return res.status(400).json({
-        success: false,
-        message: "variantId is required",
-      });
-    }
-
     const userVehicle = await UserVehicle.create({
       user: req.user.id,
       variant: variantId,
       registrationNumber,
     });
 
+    const populatedVehicle = await UserVehicle.findById(
+      userVehicle._id,
+    ).populate("variant");
+
     res.status(201).json({
       success: true,
       message: "Vehicle added to garage",
       data: {
-        vehicle: userVehicle,
+        vehicle: populatedVehicle,
       },
     });
   } catch (error) {
