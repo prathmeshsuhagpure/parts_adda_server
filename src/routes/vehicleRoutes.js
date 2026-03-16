@@ -2,26 +2,31 @@ const express = require("express");
 const router = express.Router();
 const { protect } = require("../middlewares/auth");
 
-const vehicleController = require("../controllers/vehicleController");
+const {
+  getBrands,
+  getModels,
+  getGenerations,
+  getVariants,
+  getVariantById,
+  addUserVehicle,
+  getUserVehicles,
+  removeVehicle,
+} = require("../controllers/vehicleController");
 
-router.get("/makes", vehicleController.getMakes);
+router.get("/brands", getBrands);
 
-router.get("/models/:make", vehicleController.getModels);
+router.get("/models/:brandId", getModels);
 
-router.get("/years", vehicleController.getYears);
+router.get("/generations/:modelId", getGenerations);
 
-router.get("/variants", vehicleController.getVariants);
+router.get("/variants/:generationId", getVariants);
 
-router.get("/:id", vehicleController.getVehicleById);
+router.get("/variant/:id", getVariantById);
 
-router.post("/garage/addVehicle", protect, vehicleController.addUserVehicle);
+router.post("/garage/addVehicle", protect, addUserVehicle);
 
-router.get("/garage/getVehicles", protect, vehicleController.getUserVehicles);
+router.get("/garage/getVehicles", protect, getUserVehicles);
 
-router.delete(
-  "/garage/removeVehicle/:id",
-  protect,
-  vehicleController.removeVehicle,
-);
+router.delete("/garage/removeVehicle/:id", protect, removeVehicle);
 
 module.exports = router;

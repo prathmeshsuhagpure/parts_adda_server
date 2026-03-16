@@ -1,14 +1,18 @@
-const Vehicle = require("../models/Vehicle");
+const Brand = require("../models/Brand");
+const VehicleModel = require("../models/vehicle catalog models/vehicle_model");
+const Generation = require("../models/vehicle catalog models/vehicle_generation");
+const Variant = require("../models/vehicle catalog models/vehicle_variant");
 const UserVehicle = require("../models/vehicle catalog models/user_vehicle");
 
-const getMakes = async (req, res) => {
+// GET ALL BRANDS
+const getBrands = async (req, res) => {
   try {
-    const makes = await Vehicle.distinct("make");
+    const brands = await Brand.find().select("name");
 
     res.status(200).json({
       success: true,
-      count: makes.length,
-      data: makes,
+      count: brands.length,
+      data: brands,
     });
   } catch (error) {
     res.status(500).json({
@@ -18,11 +22,12 @@ const getMakes = async (req, res) => {
   }
 };
 
+// GET MODELS BY BRAND
 const getModels = async (req, res) => {
   try {
-    const { make } = req.params;
+    const { brandId } = req.params;
 
-    const models = await Vehicle.distinct("model", { make });
+    const models = await VehicleModel.find({ brand: brandId }).select("name");
 
     res.status(200).json({
       success: true,
@@ -37,26 +42,17 @@ const getModels = async (req, res) => {
   }
 };
 
-const getYears = async (req, res) => {
+// GET GENERATIONS BY MODEL
+const getGenerations = async (req, res) => {
   try {
-    const { make, model } = req.query;
+    const { modelId } = req.params;
 
-    if (!make || !model) {
-      return res.status(400).json({
-        success: false,
-        message: "Make and model are required",
-      });
-    }
-
-    const years = await Vehicle.distinct("year", {
-      make,
-      model,
-    });
+    const generations = await Generation.find({ model: modelId });
 
     res.status(200).json({
       success: true,
-      count: years.length,
-      data: years,
+      count: generations.length,
+      data: generations,
     });
   } catch (error) {
     res.status(500).json({
@@ -66,22 +62,12 @@ const getYears = async (req, res) => {
   }
 };
 
+// GET VARIANTS BY GENERATION
 const getVariants = async (req, res) => {
   try {
-    const { make, model, year } = req.query;
+    const { generationId } = req.params;
 
-    if (!make || !model || !year) {
-      return res.status(400).json({
-        success: false,
-        message: "Make, model and year are required",
-      });
-    }
-
-    const variants = await Vehicle.find({
-      make,
-      model,
-      year,
-    }).select("make model year fuelType engineCC variant variantCode");
+    const variants = await Variant.find({ generation: generationId });
 
     res.status(200).json({
       success: true,
@@ -96,20 +82,29 @@ const getVariants = async (req, res) => {
   }
 };
 
-const getVehicleById = async (req, res) => {
+// GET VARIANT BY ID
+const getVariantById = async (req, res) => {
   try {
-    const vehicle = await Vehicle.findById(req.params.id);
+    const variant = await Variant.findById(req.params.id).populate({
+      path: "generation",
+      populate: {
+        path: "model",
+        populate: {
+          path: "brand",
+        },
+      },
+    });
 
-    if (!vehicle) {
+    if (!variant) {
       return res.status(404).json({
         success: false,
-        message: "Vehicle not found",
+        message: "Variant not found",
       });
     }
 
     res.status(200).json({
       success: true,
-      data: vehicle,
+      data: variant,
     });
   } catch (error) {
     res.status(500).json({
@@ -119,6 +114,7 @@ const getVehicleById = async (req, res) => {
   }
 };
 
+// ADD VEHICLE TO USER GARAGE
 const addUserVehicle = async (req, res) => {
   try {
     const { variantId, registrationNumber } = req.body;
@@ -151,11 +147,21 @@ const addUserVehicle = async (req, res) => {
   }
 };
 
+// GET USER GARAGE VEHICLES
 const getUserVehicles = async (req, res) => {
   try {
-    const vehicles = await UserVehicle.find({ user: req.user.id }).populate(
-      "variant",
-    );
+    const vehicles = await UserVehicle.find({ user: req.user.id }).populate({
+      path: "variant",
+      populate: {
+        path: "generation",
+        populate: {
+          path: "model",
+          populate: {
+            path: "brand",
+          },
+        },
+      },
+    });
 
     res.json({
       success: true,
@@ -169,23 +175,31 @@ const getUserVehicles = async (req, res) => {
   }
 };
 
+// REMOVE VEHICLE FROM GARAGE
 const removeVehicle = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  await UserVehicle.findByIdAndDelete(id);
+    await UserVehicle.findByIdAndDelete(id);
 
-  res.json({
-    success: true,
-    message: "Vehicle removed",
-  });
+    res.json({
+      success: true,
+      message: "Vehicle removed",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 module.exports = {
-  getMakes,
+  getBrands,
   getModels,
-  getYears,
+  getGenerations,
   getVariants,
-  getVehicleById,
+  getVariantById,
   addUserVehicle,
   getUserVehicles,
   removeVehicle,
