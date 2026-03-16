@@ -1,55 +1,415 @@
-const brands = {
-  Toyota: ["Corolla", "Camry", "Fortuner", "Hilux"],
-  Honda: ["Civic", "City", "Amaze", "CRV"],
-  Hyundai: ["i10", "i20", "Creta", "Verna"],
-  Tata: ["Nexon", "Harrier", "Safari", "Altroz"],
-  Mahindra: ["Thar", "Scorpio", "XUV300", "XUV700"],
-  Ford: ["Figo", "EcoSport", "Endeavour", "Mustang"],
-  BMW: ["3 Series", "5 Series", "7 Series", "X1"],
-  Mercedes: ["A Class", "C Class", "E Class", "GLA"],
-  Audi: ["A3", "A4", "A6", "Q3"],
-  Volkswagen: ["Polo", "Vento", "Virtus", "Taigun"],
-};
+module.exports = [
+  {
+    brand: "Maruti Suzuki",
+    models: [
+      {
+        name: "Swift",
+        generations: [
+          {
+            name: "3rd Gen",
+            startYear: 2018,
+            endYear: null,
+            variants: [
+              {
+                variantName: "LXI",
+                engineCC: 1197,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "VXI",
+                engineCC: 1197,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Mid",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "ZXI+",
+                engineCC: 1197,
+                fuelType: "Petrol",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Brezza",
+        generations: [
+          {
+            name: "2nd Gen",
+            startYear: 2022,
+            endYear: null,
+            variants: [
+              {
+                variantName: "LXI",
+                engineCC: 1462,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "ZXI+",
+                engineCC: 1462,
+                fuelType: "Petrol",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
-const fuelTypes = ["Petrol", "Diesel", "Hybrid", "Electric", "CNG"];
+  {
+    brand: "Hyundai",
+    models: [
+      {
+        name: "i20",
+        generations: [
+          {
+            name: "3rd Gen",
+            startYear: 2020,
+            endYear: null,
+            variants: [
+              {
+                variantName: "Magna",
+                engineCC: 1197,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "Asta (O)",
+                engineCC: 998,
+                fuelType: "Petrol",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Creta",
+        generations: [
+          {
+            name: "2nd Gen",
+            startYear: 2020,
+            endYear: null,
+            variants: [
+              {
+                variantName: "E",
+                engineCC: 1497,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "SX(O)",
+                engineCC: 1493,
+                fuelType: "Diesel",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
-const engineOptions = {
-  Petrol: [999, 1197, 1498, 1798, 1998],
-  Diesel: [1248, 1497, 1995, 2198],
-  Hybrid: [1798, 2494],
-  Electric: [0],
-  CNG: [1197, 1498],
-};
+  {
+    brand: "Tata",
+    models: [
+      {
+        name: "Nexon",
+        generations: [
+          {
+            name: "Facelift 2023",
+            startYear: 2023,
+            endYear: null,
+            variants: [
+              {
+                variantName: "XE",
+                engineCC: 1199,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6 Phase 2",
+              },
+              {
+                variantName: "XZ+",
+                engineCC: 1497,
+                fuelType: "Diesel",
+                transmission: "Manual",
+                trimLevel: "Top",
+                emissionStandard: "BS6 Phase 2",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Punch",
+        generations: [
+          {
+            name: "1st Gen",
+            startYear: 2021,
+            endYear: null,
+            variants: [
+              {
+                variantName: "Pure",
+                engineCC: 1199,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "Creative",
+                engineCC: 1199,
+                fuelType: "Petrol",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
-const variants = ["Base", "S", "SX", "ZX", "Sport", "Premium"];
+  {
+    brand: "Mahindra",
+    models: [
+      {
+        name: "XUV700",
+        generations: [
+          {
+            name: "1st Gen",
+            startYear: 2021,
+            endYear: null,
+            variants: [
+              {
+                variantName: "MX",
+                engineCC: 1997,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "AX7L",
+                engineCC: 2184,
+                fuelType: "Diesel",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Thar",
+        generations: [
+          {
+            name: "2nd Gen",
+            startYear: 2020,
+            endYear: null,
+            variants: [
+              {
+                variantName: "AX Opt",
+                engineCC: 1997,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Mid",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "LX",
+                engineCC: 2184,
+                fuelType: "Diesel",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
-const startYear = 2015;
-const endYear = 2025;
+  {
+    brand: "Toyota",
+    models: [
+      {
+        name: "Innova Hycross",
+        generations: [
+          {
+            name: "1st Gen",
+            startYear: 2022,
+            endYear: null,
+            variants: [
+              {
+                variantName: "GX",
+                engineCC: 1987,
+                fuelType: "Petrol",
+                transmission: "Automatic",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "ZX Hybrid",
+                engineCC: 1987,
+                fuelType: "Petrol Hybrid",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Fortuner",
+        generations: [
+          {
+            name: "Facelift 2021",
+            startYear: 2021,
+            endYear: null,
+            variants: [
+              {
+                variantName: "2.7L Petrol MT",
+                engineCC: 2694,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "2.8L Diesel AT Legender",
+                engineCC: 2755,
+                fuelType: "Diesel",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
-const vehicles = [];
+  {
+    brand: "Kia",
+    models: [
+      {
+        name: "Seltos",
+        generations: [
+          {
+            name: "Facelift 2023",
+            startYear: 2023,
+            endYear: null,
+            variants: [
+              {
+                variantName: "HTE",
+                engineCC: 1497,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "GT Line",
+                engineCC: 1482,
+                fuelType: "Petrol Turbo",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "Sonet",
+        generations: [
+          {
+            name: "Facelift 2023",
+            startYear: 2023,
+            endYear: null,
+            variants: [
+              {
+                variantName: "HTE",
+                engineCC: 1197,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "GTX+",
+                engineCC: 1493,
+                fuelType: "Diesel",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
-for (const make in brands) {
-  for (const model of brands[make]) {
-    for (let year = startYear; year <= endYear; year++) {
-      for (const fuel of fuelTypes) {
-        const engines = engineOptions[fuel] || [];
-
-        for (const engine of engines) {
-          for (const variant of variants) {
-            vehicles.push({
-              make,
-              model,
-              year,
-              fuelType: fuel,
-              engineCC: engine,
-              variant,
-              variantCode: `${make.substring(0, 3).toUpperCase()}-${model.substring(0, 3).toUpperCase()}-${year}-${variant}`,
-            });
-          }
-        }
-      }
-    }
-  }
-}
-
-module.exports = vehicles;
+  {
+    brand: "Honda",
+    models: [
+      {
+        name: "City",
+        generations: [
+          {
+            name: "5th Gen",
+            startYear: 2020,
+            endYear: null,
+            variants: [
+              {
+                variantName: "SV",
+                engineCC: 1498,
+                fuelType: "Petrol",
+                transmission: "Manual",
+                trimLevel: "Base",
+                emissionStandard: "BS6",
+              },
+              {
+                variantName: "ZX CVT",
+                engineCC: 1498,
+                fuelType: "Petrol",
+                transmission: "Automatic",
+                trimLevel: "Top",
+                emissionStandard: "BS6",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];

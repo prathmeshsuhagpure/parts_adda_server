@@ -1,18 +1,42 @@
 const mongoose = require("mongoose");
 
 const variantSchema = new mongoose.Schema({
-  model: {
+  generation: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "VehicleModel",
+    ref: "Generation",
     required: true,
   },
-  name: String,
-  year: Number,
+
+  engineCC: Number,
+
   fuelType: {
     type: String,
-    enum: ["petrol", "diesel", "electric", "cng", "hybrid"],
+    enum: [
+      "Petrol",
+      "Diesel",
+      "Petrol Hybrid",
+      "Electric",
+      "CNG",
+      "Petrol Turbo",
+    ],
   },
-  engineCC: Number,
+
+  transmission: {
+    type: String,
+    enum: ["Manual", "Automatic", "CVT", "DCT", "AMT"],
+  },
+
+  trimLevel: {
+    type: String,
+    enum: ["Base", "Mid", "Top"],
+  },
+
+  variantName: String,
+
+  emissionStandard: {
+    type: String,
+    enum: ["BS4", "BS6", "BS6 Phase 2"],
+  },
 });
 
 const VehicleVariant = mongoose.model("VehicleVariant", variantSchema);
