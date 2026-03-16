@@ -120,36 +120,74 @@ const getVehicleById = async (req, res) => {
 };
 
 const addUserVehicle = async (req, res) => {
-  const { variantId, registrationNumber } = req.body;
+  try {
+    const { variantId, registrationNumber } = req.body;
 
-  const vehicle = await UserVehicle.create({
-    user: req.user.id,
-    variant: variantId,
-    registrationNumber,
-  });
+    if (!variantId) {
+      return res.status(400).json({
+        success: false,
+        message: "variantId is required",
+      });
+    }
 
-  res.json({
-    success: true,
-    message: "Vehicle added",
-    data: vehicle,
-  });
+    // Check if the vehicle variant exists in master dataset
+    const variant = await Vehicle.findById(variantId);
+
+    if (!variant) {
+      return res.status(404).json({
+        success: false,
+        message: "Vehicle variant not found",
+      });
+    }
+
+    const existing = await UserVehicle.findOne({
+      user: req.user.id,
+      variant: variantId,
+    });
+
+    if (existing) {
+      return res.status(400).json({
+        success: false,
+        message: "Vehicle already added to garage",
+      });
+    }
+
+    // Create user vehicle (garage entry)
+    const userVehicle = await UserVehicle.create({
+      user: req.user.id,
+      variant: variant._id,
+      registrationNumber,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Vehicle added to garage",
+      data: userVehicle,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 const getUserVehicles = async (req, res) => {
-  const vehicles = await UserVehicle.find({ user: req.user.id }).populate({
-    path: "variant",
-    populate: {
-      path: "model",
-      populate: {
-        path: "brand",
-      },
-    },
-  });
+  try {
+    const vehicles = await UserVehicle.find({ user: req.user.id }).populate(
+      "variant",
+    );
 
-  res.json({
-    success: true,
-    data: vehicles,
-  });
+    res.json({
+      success: true,
+      data: vehicles,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 const removeVehicle = async (req, res) => {
