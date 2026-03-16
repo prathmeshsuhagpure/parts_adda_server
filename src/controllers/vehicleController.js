@@ -130,39 +130,27 @@ const addUserVehicle = async (req, res) => {
       });
     }
 
-    // Check if the vehicle variant exists in master dataset
-    const variant = await Vehicle.findById(variantId);
+    const vehicle = await Vehicle.findById(variantId);
 
-    if (!variant) {
+    if (!vehicle) {
       return res.status(404).json({
         success: false,
-        message: "Vehicle variant not found",
+        message: "Vehicle not found",
       });
     }
 
-    const existing = await UserVehicle.findOne({
-      user: req.user.id,
-      variant: variantId,
-    });
-
-    if (existing) {
-      return res.status(400).json({
-        success: false,
-        message: "Vehicle already added to garage",
-      });
-    }
-
-    // Create user vehicle (garage entry)
     const userVehicle = await UserVehicle.create({
       user: req.user.id,
-      variant: variant._id,
+      variant: variantId,
       registrationNumber,
     });
 
     res.status(201).json({
       success: true,
       message: "Vehicle added to garage",
-      data: userVehicle,
+      data: {
+        vehicle: userVehicle,
+      },
     });
   } catch (error) {
     res.status(500).json({
