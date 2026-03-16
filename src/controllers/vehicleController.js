@@ -130,15 +130,6 @@ const addUserVehicle = async (req, res) => {
       });
     }
 
-    const vehicle = await Vehicle.findById(variantId);
-
-    if (!vehicle) {
-      return res.status(404).json({
-        success: false,
-        message: "Vehicle not found",
-      });
-    }
-
     const userVehicle = await UserVehicle.create({
       user: req.user.id,
       variant: variantId,

@@ -13,10 +13,10 @@ router.get("/variants", vehicleController.getVariants);
 
 router.get("/:id", vehicleController.getVehicleById);
 
-router.post("/user-vehicle", vehicleController.addUserVehicle);
+router.post("/garage/addVehicle", vehicleController.addUserVehicle);
 
-router.get("/user-vehicles", vehicleController.getUserVehicles);
+router.get("/garage/getVehicles", vehicleController.getUserVehicles);
 
-router.delete("/user-vehicle/:id", vehicleController.removeVehicle);
+router.delete("/garage/removeVehicle/:id", vehicleController.removeVehicle);
 
 module.exports = router;
