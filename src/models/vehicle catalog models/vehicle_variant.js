@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const variantSchema = new mongoose.Schema({
   generation: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Generation",
+    ref: "VehicleGeneration",
     required: true,
   },
 
