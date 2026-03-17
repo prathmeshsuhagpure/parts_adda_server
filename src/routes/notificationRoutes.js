@@ -2,7 +2,7 @@ const router = require("express").Router();
 const ctrl = require("../controllers/notificationController");
 const { protect } = require("../middlewares/auth");
 
-router.post("/send", ctrl.send); // internal — add IP whitelist in prod
+router.post("/send", ctrl.send);
 router.use(protect);
 router.get("/", ctrl.getNotifications);
 router.get("/unread-count", ctrl.unreadCount);

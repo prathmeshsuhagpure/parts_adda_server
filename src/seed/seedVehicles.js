@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const Brand = require("../models/Brand");
+const Brand = require("../models/vehicle catalog models/vehicle_brand");
 const VehicleModel = require("../models/vehicle catalog models/vehicle_model");
 const Generation = require("../models/vehicle catalog models/vehicle_generation");
 const Variant = require("../models/vehicle catalog models/vehicle_variant");
