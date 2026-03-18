@@ -46,29 +46,24 @@ const placeOrder = asyncHandler(async (req, res) => {
     timeline: [{ status: "placed", message: "Order placed successfully" }],
   });
 
-  await sendNotification({
-    userId: req.user.id,
-    title: "Order Placed 🎉",
-    body: `Your order #${order.orderNumber} has been placed successfully. We'll notify you when it's confirmed. Thank you for shopping with us! 😊`,
-    type: "order",
-    data: { orderId: order._id.toString() },
-    fcmToken: req.user.fcmToken,
-  });
+  console.log("ORDER CREATED:", order._id.toString());
+  console.log("FCM TOKEN:", req.user.fcmToken);
 
-  // Send FCM push (if token exists in user)
-  if (req.user.fcmToken) {
-    try {
-      await admin.messaging().send({
-        token: req.user.fcmToken,
-        notification: { title, body },
-        data: {
-          orderId: order._id.toString(),
-          type: "order",
-        },
-      });
-    } catch (err) {
-      console.error("FCM error:", err.message);
-    }
+  const title = "Order Placed 🎉";
+  const body = `Your order #${order.orderNumber} has been placed successfully. We'll notify you when it's confirmed.`;
+
+  try {
+    await sendNotification({
+      userId: req.user.id,
+      title,
+      body,
+      type: "order",
+      data: { orderId: order._id.toString() },
+      fcmToken: req.user.fcmToken,
+    });
+    console.log("NOTIFICATION SAVED:", notif?._id?.toString());
+  } catch (err) {
+    console.error("ORDER NOTIFICATION ERROR:", err);
   }
 
   // Create Razorpay order for online payment
