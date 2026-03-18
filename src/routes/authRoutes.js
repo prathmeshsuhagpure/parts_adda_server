@@ -7,6 +7,7 @@ const {
   refreshToken,
   logout,
   getMe,
+  getFcmToken,
 } = require("../controllers/authController");
 const validate = require("../middlewares/validate");
 const { protect } = require("../middlewares/auth");
@@ -41,5 +42,6 @@ router.post(
 router.post("/refresh", refreshToken);
 router.post("/logout", protect, logout);
 router.get("/me", protect, getMe);
+router.post("/fcm-token", protect, getFcmToken);
 
 module.exports = router;

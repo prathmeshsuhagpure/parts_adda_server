@@ -108,10 +108,20 @@ const getMe = asyncHandler(async (req, res) => {
   return success(res, user);
 });
 
+const getFcmToken = asyncHandler(async (req, res) => {
+  const { fcmToken } = req.body;
+  const user = await User.findById(req.user.id);
+  if (!user) throw new AppError("User not found.", 404);
+  user.fcmToken = fcmToken;
+  await user.save({ validateBeforeSave: false });
+  return success(res, user, "FCM token updated successfully");
+});
+
 module.exports = {
   register,
   login,
   refreshToken,
   logout,
   getMe,
+  getFcmToken,
 };
