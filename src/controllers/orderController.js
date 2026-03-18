@@ -3,7 +3,7 @@ const Razorpay = require("razorpay");
 const Order = require("../models/Order");
 const Transaction = require("../models/Transaction");
 const AppError = require("../utils/appError");
-const Notification = require("../models/Notification");
+const sendNotification = require("../utils/sendNotification");
 const admin = require("firebase-admin");
 const asyncHandler = require("../utils/asyncHandler");
 const { success, created, paginated } = require("../utils/response");
@@ -46,17 +46,13 @@ const placeOrder = asyncHandler(async (req, res) => {
     timeline: [{ status: "placed", message: "Order placed successfully" }],
   });
 
-  const title = "Order Placed 🎉";
-  const body = `Your order #${order.orderNumber} has been placed successfully. We'll notify you when it's confirmed. Thank you for shopping with us! 😊`;
-
-  await sendNotificationInternal({
+  await sendNotification({
     userId: req.user.id,
+    title: "Order Placed 🎉",
+    body: `Your order #${order.orderNumber} has been placed successfully. We'll notify you when it's confirmed. Thank you for shopping with us! 😊`,
     type: "order",
-    title,
-    body,
-    fcmToken: req.user.fcmToken,
-    email: req.user.email,
     data: { orderId: order._id.toString() },
+    fcmToken: req.user.fcmToken,
   });
 
   // Send FCM push (if token exists in user)
