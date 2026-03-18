@@ -29,4 +29,6 @@ const notifSchema = new mongoose.Schema({
   }, // 90 days TTL
 });
 notifSchema.index({ userId: 1, createdAt: -1 });
-module.exports = mongoose.model("Notification", notifSchema);
+
+const Notification = mongoose.model("Notification", notifSchema);
+module.exports = Notification;

@@ -45,7 +45,15 @@ const sendEmail = async (to, subject, html) => {
 // ── POST /notifications/send (internal) ──────────────────────
 const sendNotification = asyncHandler(async (req, res) => {
   const { userId, type, title, body, data, fcmToken, email } = req.body;
-  const notif = await Notification.create({ userId, type, title, body, data });
+
+  const notif = await Notification.create({
+    userId,
+    type,
+    title,
+    body,
+    data,
+  });
+
   if (fcmToken) await sendPush(fcmToken, title, body, data || {});
   if (email) await sendEmail(email, title, `<p>${body}</p>`);
   return success(res, { notification: notif });

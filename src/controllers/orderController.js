@@ -3,6 +3,8 @@ const Razorpay = require("razorpay");
 const Order = require("../models/Order");
 const Transaction = require("../models/Transaction");
 const AppError = require("../utils/appError");
+const Notification = require("../models/Notification");
+const admin = require("firebase-admin");
 const asyncHandler = require("../utils/asyncHandler");
 const { success, created, paginated } = require("../utils/response");
 
@@ -43,6 +45,35 @@ const placeOrder = asyncHandler(async (req, res) => {
     isB2B: !!isB2B,
     timeline: [{ status: "placed", message: "Order placed successfully" }],
   });
+
+  const title = "Order Placed 🎉";
+  const body = `Your order #${order.orderNumber} has been placed successfully. We'll notify you when it's confirmed. Thank you for shopping with us! 😊`;
+
+  await sendNotificationInternal({
+    userId: req.user.id,
+    type: "order",
+    title,
+    body,
+    fcmToken: req.user.fcmToken,
+    email: req.user.email,
+    data: { orderId: order._id.toString() },
+  });
+
+  // Send FCM push (if token exists in user)
+  if (req.user.fcmToken) {
+    try {
+      await admin.messaging().send({
+        token: req.user.fcmToken,
+        notification: { title, body },
+        data: {
+          orderId: order._id.toString(),
+          type: "order",
+        },
+      });
+    } catch (err) {
+      console.error("FCM error:", err.message);
+    }
+  }
 
   // Create Razorpay order for online payment
   if (paymentMethod === "online") {

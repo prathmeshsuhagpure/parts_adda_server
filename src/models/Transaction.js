@@ -20,4 +20,6 @@ const txSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
-module.exports = mongoose.model("Transaction", txSchema);
+
+const Transaction = mongoose.model("Transaction", txSchema);
+module.exports = Transaction;
