@@ -9,7 +9,6 @@ const sendNotification = async ({
   data = {},
   fcmToken,
 }) => {
-  // 1. Save in DB
   const notif = await Notification.create({
     userId,
     type,
@@ -18,19 +17,45 @@ const sendNotification = async ({
     data,
   });
 
-  // 2. Send push
+  console.log("📩 Notification saved:", notif._id.toString());
+  console.log("📱 Sending to token:", fcmToken);
+
   if (fcmToken) {
     try {
-      await admin.messaging().send({
+      const message = {
         token: fcmToken,
         notification: { title, body },
         data: Object.fromEntries(
           Object.entries(data).map(([k, v]) => [k, String(v)]),
         ),
-      });
+
+        // ✅ ADD THIS (IMPORTANT FOR ANDROID)
+        android: {
+          priority: "high",
+          notification: {
+            channelId: "default_channel",
+            sound: "default",
+          },
+        },
+
+        // ✅ ADD THIS (IMPORTANT FOR iOS)
+        apns: {
+          payload: {
+            aps: {
+              sound: "default",
+            },
+          },
+        },
+      };
+
+      const response = await admin.messaging().send(message);
+
+      console.log("✅ FCM SENT SUCCESS:", response);
     } catch (err) {
-      console.error("FCM error:", err.message);
+      console.error("❌ FCM ERROR:", err.message);
     }
+  } else {
+    console.log("⚠️ No FCM token found");
   }
 
   return notif;
