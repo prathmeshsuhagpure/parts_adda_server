@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const AppError = require("../utils/appError");
+const User = require("../models/User");
 
-const protect = (req, res, next) => {
+const protect = async (req, res, next) => {
   const header = req.headers.authorization;
   if (!header || !header.startsWith("Bearer ")) {
     return next(new AppError("Not authenticated. Token missing.", 401));
@@ -9,7 +10,13 @@ const protect = (req, res, next) => {
   const token = header.split(" ")[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return next(new AppError("User not found.", 401));
+    }
+
+    req.user = user;
     next();
   } catch (err) {
     return next(new AppError("Invalid or expired token.", 401));
