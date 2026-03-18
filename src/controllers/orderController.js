@@ -53,7 +53,7 @@ const placeOrder = asyncHandler(async (req, res) => {
   const body = `Your order #${order.orderNumber} has been placed successfully. We'll notify you when it's confirmed.`;
 
   try {
-    await sendNotification({
+    const notif = await sendNotification({
       userId: req.user.id,
       title,
       body,
